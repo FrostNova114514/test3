@@ -11,7 +11,7 @@ inline constexpr const char* reset() { return "\033[0m"; }
 inline constexpr const char* bold() { return "\033[1m"; }
 inline constexpr const char* dim() { return "\033[2m"; }
 
-// UNO 标准色（truecolor）
+// UNO （truecolor）
 // Red    #FF0000  (255, 0, 0)
 // Yellow #FFFF00  (255, 255, 0)
 // Green  #00AA00  (0, 170, 0)

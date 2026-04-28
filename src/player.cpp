@@ -1,14 +1,14 @@
-#include "player.h" // player interface // 玩家接口
+#include "player.h" // player interface
 
-#include "game.h" // game state definition // 游戏状态定义
+#include "game.h" // game state definition
 #include "ui.h"
 #include "ansi.h"
 
-#include <algorithm> // std::find_if // 使用 std::find_if
-#include <cctype> // std::tolower // 使用 std::tolower
-#include <iostream> // std::cout, std::cin // 使用 std::cout 和 std::cin
-#include <limits> // std::numeric_limits // 使用 std::numeric_limits
-#include <utility> // utility helpers if needed // 如有需要使用通用工具
+#include <algorithm> // std::find_if
+#include <cctype> // std::tolower
+#include <iostream> // std::cout, std::cin
+#include <limits> // std::numeric_limits
+#include <utility> // utility helpers if needed
 #include <string>
 
 #include <unistd.h>
@@ -126,7 +126,7 @@ HumanPlayer::HumanPlayer() = default; // default constructor // 默认构造函�
 
 HumanPlayer::~HumanPlayer() = default; // destructor // 析构函数
 
-Card HumanPlayer::takeTurn(const GameState& state) { // 询问人类玩家出牌（COMP2113 课程要求：循环直到合法选择）
+Card HumanPlayer::takeTurn(const GameState& state) { // Ask the human player for a move (loop until a valid choice is made)
     while (true) { // 循环提示用户，直到做出合法出牌或选择抽牌
         UI ui;
         ui.showGameState(state);

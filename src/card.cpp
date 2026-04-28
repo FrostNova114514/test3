@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-// ========== 构造函数 ==========
+// ========== Constructors ==========
 
 Card::Card()
     : color('x'), type(CardType::Number), value(-1) {}
@@ -10,7 +10,7 @@ Card::Card()
 Card::Card(char color, CardType type, int value)
     : color(color), type(type), value(value) {}
 
-// ========== Getter / Setter ==========
+// ========== Getters / Setters ==========
 
 char Card::getColor() const {
     return color;
@@ -28,31 +28,31 @@ void Card::setColor(char c) {
     color = c;
 }
 
-// ========== 规则判断：能不能打出去 ==========
+// ========== Playability Check ==========
 //
-// 基础版 UNO 简化规则：
-// 1. 牌是 Wild / WildDrawFour → 直接可以打
-// 2. 颜色 == currentColor → 可以打
-// 3. 类型相同 → 可以打
-// 4. 两张都是数字牌且数字相同 → 可以打
-// （+4 的严格“必须没有同色可出牌”规则 Phase 1 先不实现）
+// Simplified UNO rules:
+// 1. Wild / WildDrawFour can always be played.
+// 2. A card can be played if its color matches currentColor.
+// 3. A card can be played if its type matches the top card.
+// 4. Two number cards can be played if their values match.
+// (The strict Wild Draw Four restriction is not implemented in Phase 1.)
 bool Card::isPlayable(const Card& topCard, char currentColor) const {
-    // Wild / Wild Draw Four 总是可以打（Phase 1 简化）
+    // Wild / Wild Draw Four can always be played (Phase 1 simplification)
     if (type == CardType::Wild || type == CardType::WildDrawFour) {
         return true;
     }
 
-    // 颜色匹配当前有效颜色
+    // Match the current active color
     if (color == currentColor) {
         return true;
     }
 
-    // 类型匹配顶牌
+    // Match the top card type
     if (type == topCard.getType()) {
         return true;
     }
 
-    // 数字匹配顶牌
+    // Match the top card value
     if (type == CardType::Number &&
         topCard.getType() == CardType::Number &&
         value == topCard.getValue()) {
@@ -62,24 +62,24 @@ bool Card::isPlayable(const Card& topCard, char currentColor) const {
     return false;
 }
 
-// ========== toString：调试 / UI 展示 ==========
+// ========== toString: Debug / UI Display ==========
 
 std::string Card::toString() const {
     std::ostringstream oss;
 
-    // 颜色
+    // Color
     switch (color) {
         case 'r': oss << "R"; break;
         case 'y': oss << "Y"; break;
         case 'g': oss << "G"; break;
         case 'b': oss << "B"; break;
-        case 'x': oss << "X"; break; // Wild / 无颜色
+        case 'x': oss << "X"; break; // Wild / no color
         default:  oss << "?"; break;
     }
 
     oss << "-";
 
-    // 类型 + 数值
+    // Type + value
     switch (type) {
         case CardType::Number:
             oss << value;

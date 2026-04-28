@@ -5,29 +5,29 @@
 #include <array>
 #include <string>
 
-// 引入其他模块头文件
+// Include other module headers
 #include "card.h"
 #include "deck.h"
 #include "player.h"
 
-// 游戏状态快照，用于向 UI 传递渲染数据
+// Game state snapshot used to pass render data to the UI
 struct GameState {
-    Card topCard;                 // 弃牌堆顶牌（用于展示）
-    char currentColor;            // 当前生效颜色（'r', 'y', 'g', 'b', 或 'x'）
-    int currentPlayerIndex;       // 当前回合玩家索引（0-3）
-    int direction;                // 游戏方向（1=顺时针, -1=逆时针）
-    std::array<int, 4> playerCardCounts; // 每位玩家剩余手牌数
+    Card topCard;                 // Top card of the discard pile (for display)
+    char currentColor;            // Current active color ('r', 'y', 'g', 'b', or 'x')
+    int currentPlayerIndex;       // Current player index (0-3)
+    int direction;                // Game direction (1 = clockwise, -1 = counter-clockwise)
+    std::array<int, 4> playerCardCounts; // Remaining hand count for each player
 
-    // --- Phase 2 & 3 扩展预留 ---
-    bool isDarkSide;              // [Phase 2] Uno Flip 暗面状态
-    int currentWeather;           // [Phase 3] 天气状态（0=晴天, 1=雨天, 2=台风, 3=轮盘）
+    // --- Reserved for Phase 2 & 3 extensions ---
+    bool isDarkSide;              // [Phase 2] Uno Flip dark-side state
+    int currentWeather;           // [Phase 3] Weather state (0=sunny, 1=rainy, 2=typhoon, 3=roulette)
 };
 
 class Game {
 private:
-    // --- 核心变量 ---
-    std::vector<Player*> players;    // [动态内存与多态] 存储 1 个 HumanPlayer 和 3 个 AIPlayer
-    Deck deck;                       // 抽牌堆
+    // --- Core variables ---
+    std::vector<Player*> players;    // [Dynamic memory and polymorphism] Stores 1 HumanPlayer and 3 AIPlayers
+    Deck deck;                       // Draw pile
     std::vector<Card> discardPile;   // 弃牌堆
 
     int currentPlayer;               // 当前回合玩家索引（0-3）

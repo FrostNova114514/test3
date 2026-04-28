@@ -4,34 +4,34 @@
 #include <vector>
 #include "card.h"
 
-// 牌堆系统：负责“牌”的生成、存储、洗牌、抽牌
+// Deck system: handles card generation, storage, shuffling, and drawing
 class Deck {
 private:
-    // 抽牌堆：面朝下的牌堆，顶端是 back()
+    // Draw pile: face-down stack, top is back()
     std::vector<Card> drawPile;
 
 public:
-    // 构造函数：生成一副标准 UNO 牌并洗牌
+    // Constructor: creates a standard UNO deck and shuffles it
     Deck();
 
-    // 重新生成整副标准 UNO 牌（108 张）
+    // Rebuild a full standard UNO deck (108 cards)
     void initialize();
 
-    // 洗牌
+    // Shuffle
     void shuffle();
 
-    // 抽一张牌；若牌堆为空则抛出异常
+    // Draw one card; throw an exception if the pile is empty
     Card drawCard();
 
-    // 抽牌堆是否为空
+    // Check whether the draw pile is empty
     bool isEmpty() const;
 
-    // 当前抽牌堆剩余张数
+    // Number of cards remaining in the draw pile
     int size() const;
 
-    // 用弃牌堆重建抽牌堆：
-    // - 保留弃牌堆顶牌
-    // - 其余全部洗回抽牌堆
+    // Rebuild the draw pile from the discard pile:
+    // - Keep the top discard card
+    // - Shuffle all other cards back into the draw pile
     void rebuildFromDiscard(std::vector<Card>& discardPile);
 };
 

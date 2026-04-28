@@ -3,52 +3,52 @@
 
 #include <string>
 
-// UNO 牌的类型
+// UNO card types
 enum class CardType {
-    Number,         // 数字牌 0-9
-    Skip,           // 跳过
-    Reverse,        // 反转
+    Number,         // Number card 0-9
+    Skip,           // Skip
+    Reverse,        // Reverse
     DrawTwo,        // +2
-    Wild,           // 变色
+    Wild,           // Wild
     WildDrawFour    // +4
 };
 
-// UNO 卡牌类
+// UNO card class
 class Card {
 private:
-    // 颜色编码：
-    // 'r' = red, 'y' = yellow, 'g' = green, 'b' = blue, 'x' = 无颜色（Wild）
+    // Color encoding:
+    // 'r' = red, 'y' = yellow, 'g' = green, 'b' = blue, 'x' = no color (Wild)
     char color;
 
-    // 牌类型
+    // Card type
     CardType type;
 
-    // 数值：
-    // - 数字牌：0-9
-    // - 功能牌：统一用 -1（不用数值）
+    // Value:
+    // - Number cards: 0-9
+    // - Action cards: always use -1 (value not used)
     int value;
 
 public:
-    // 默认构造（容器需要）
+    // Default constructor (needed for containers)
     Card();
 
-    // 常规构造函数
+    // Standard constructor
     Card(char color, CardType type, int value);
 
-    // 访问接口
+    // Accessors
     char getColor() const;
     CardType getType() const;
     int getValue() const;
 
-    void setColor(char c);  // Wild 被指定颜色后修改用
+    void setColor(char c);  // Used after a Wild card is assigned a color
 
-    // 判断该牌在当前局面是否可以打出
-    // 参数：
-    //  - topCard: 当前弃牌堆顶牌
-    //  - currentColor: 当前生效颜色（Game 维护）
+    // Check whether this card can be played in the current state
+    // Parameters:
+    //  - topCard: current discard-pile top card
+    //  - currentColor: active color maintained by Game
     bool isPlayable(const Card& topCard, char currentColor) const;
 
-    // 调试 / UI 输出
+    // Debug / UI output
     std::string toString() const;
 };
 

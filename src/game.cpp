@@ -1,39 +1,39 @@
 #include "game.h"
 #include "ai.h"
 #include "player.h"
-#include "ui.h" // UI 模块头文件（课程 OOP 要求：在 Game::start() 中激活终端渲染）
+#include "ui.h" // UI module header (course OOP requirement: activate terminal rendering in Game::start())
 #include "ansi.h"
 #include <iostream>
 #include <fstream>
-#include <stdexcept> // 用于捕获 Deck 抛出的 std::runtime_error 异常
+#include <stdexcept> // Used to catch std::runtime_error exceptions thrown by Deck
 #include <limits>
 
-// 构造函数：初始化内存、洗牌并分发手牌
+// Constructor: initialize memory, shuffle, and deal cards
 Game::Game() {
-    // 1. 向 players 向量中添加 1 个 HumanPlayer 和 3 个 AIPlayer（多态）
+    // 1. Add 1 HumanPlayer and 3 AIPlayers to the players vector (polymorphism)
     players.push_back(new HumanPlayer());
     for (int i = 0; i < 3; ++i) {
         players.push_back(new AIPlayer());
     }
 
-    // 2. 初始化核心变量
+    // 2. Initialize core variables
     currentPlayer = 0;
     direction = 1;
     pendingDrawCount = 0;
     isGameOver = false;
-    isDarkSide = false; // 为 Phase 2 的翻转功能预留
-    weatherState = 0;   // 0=晴天
+    isDarkSide = false; // Reserved for Phase 2 flip functionality
+    weatherState = 0;   // 0 = Sunny
     unoAnnounced.assign(4, false);
     pendingWinner = -1;
 
-    // 3. 洗牌
+    // 3. Shuffle
     deck.shuffle();
 
-    // 4. 发牌（每人 7 张）
+    // 4. Deal cards (7 each)
     bool dealFailed = false; // 发牌失败标志，用于中断双层循环
     for (int i = 0; i < 7; ++i) {
         for (Player* player : players) {
-            // 每次抽牌前检查牌堆是否为空，防止极端情况下崩溃
+            // Check whether the pile is empty before each draw to avoid crashes
             if (!checkAndReshuffleDeck()) {
                 dealFailed = true;
                 break; // 牌堆重建失败，停止发牌
@@ -45,13 +45,13 @@ Game::Game() {
         }
     }
 
-    // 5. 翻出弃牌堆的第一张牌
-    // 按标准规则：开局首牌不能是 Wild Draw Four；若抽到则放回并重抽
+    // 5. Flip the first card of the discard pile
+    // Standard rule: the initial card cannot be a Wild Draw Four; if drawn, put it back and redraw
     Card firstCard = deck.drawCard();
     while (firstCard.getType() == CardType::WildDrawFour) {
-        discardPile.push_back(firstCard); // Wild 牌压入弃牌堆底部，不会成为顶牌
+        discardPile.push_back(firstCard); // Wild card is placed at the bottom of the discard pile and will not become the top card
         if (!checkAndReshuffleDeck()) {
-            break; // 牌堆重建失败则终止重抽循环，防止无限循环
+            break; // Stop the redraw loop if rebuilding the pile fails, to prevent an infinite loop
         }
         firstCard = deck.drawCard();
     }
